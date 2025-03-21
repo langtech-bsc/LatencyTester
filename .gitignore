@@ -1,0 +1,5 @@
+.qodo
+venv/
+.runner_metadata
+test_results.csv
+**/__pycache__

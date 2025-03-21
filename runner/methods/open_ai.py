@@ -5,7 +5,7 @@ from openai import OpenAI
 
 @MethodManager.register_method("OpenAIChat")
 class OpenAIChat(BaseTest):
-    def __init__(self, api_url, api_key, model):
+    def __init__(self, api_url, api_key="none", model="tgi"):
         self.api_url = api_url
         self.api_key = api_key
         self.model = model
@@ -34,7 +34,7 @@ class OpenAIChat(BaseTest):
 
 @MethodManager.register_method("OpenAIChatStream")
 class OpenAIChatStream(OpenAIChat):
-    def __init__(self, api_url, api_key, model):
+    def __init__(self, api_url, api_key="none", model="tgi"):
         super().__init__(api_url, api_key, model)
 
     def invoke(self):

@@ -5,7 +5,7 @@ Distributed Benchmarker is designed to measure the performance and latency of AP
 
 ## Command Usage
 ```sh
-torchrun --nproc_per_node=5 -m runner \
+torchrun --nproc_per_node=5 -m benchmarker \
     --test-method OpenAIChatStream \
     --method-args='api_url=your-url,api_key=your-key,model=model-name'
 ```
@@ -23,7 +23,7 @@ Create a new plugin by defining a class and registering it with `MethodManager`:
 
 ```python
 from openai import OpenAI
-from runner.methods.methods_manager import MethodManager, BaseTest
+from benchmarker.methods.methods_manager import MethodManager, BaseTest
 
 @MethodManager.register_method("MyNewPlugin")
 class MyNewPlugin(BaseTest):
@@ -40,7 +40,7 @@ class MyNewPlugin(BaseTest):
 ### Using the New Plugin
 Now, you can use your new plugin in the `torchrun` command:
 ```sh
-torchrun --nproc_per_node=5 -m runner \
+torchrun --nproc_per_node=5 -m benchmarker \
     ----method-plugin path/to/your-new-pluging.py
     --test-method MyNewPlugin \
     --method-args='Arguments for the method should be separated by commas'

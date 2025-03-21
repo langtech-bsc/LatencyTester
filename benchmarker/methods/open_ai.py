@@ -1,4 +1,4 @@
-from runner.methods.methods_manager import MethodManager, BaseTest
+from benchmarker.methods.methods_manager import MethodManager, BaseTest
 from openai import OpenAI
 
 

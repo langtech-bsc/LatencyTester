@@ -4,14 +4,14 @@ import os
 import time
 import torch
 import torch.distributed as dist
-from runner.methods.methods_manager import MethodManager
+from benchmarker.methods.methods_manager import MethodManager
 import importlib
 import csv
 from datetime import datetime
 import shutil
 
 
-metadata_dir = ".runner_metadata"
+metadata_dir = ".benchmarker_metadata"
 
 def init_distributed():
     
@@ -25,7 +25,7 @@ def init_distributed():
 
     return world_size, global_rank, local_rank
 
-class Runner:
+class Benchmarker:
 
     @classmethod
     def run_test(cls, class_name, method_args, rank, metadada):
@@ -85,7 +85,7 @@ def main():
     torch.distributed.barrier()
 
     start_time = time.time() if global_rank == 0 else None
-    Runner.run_test(args.test_method, args.method_args, global_rank, metadata_dir)
+    Benchmarker.run_test(args.test_method, args.method_args, global_rank, metadata_dir)
 
     torch.distributed.barrier()
 

@@ -19,13 +19,19 @@ class BaseTest(ABC):
 
 
 class MethodManager:
-    registered_tests: dict[str, Type[BaseTest]] = {}
+    registered_methods: dict[str, Type[BaseTest]] = {}
 
+
+    @classmethod
+    def list_methods(cls):
+        """Retrieve a test class by name."""
+        return cls.registered_methods.keys()
+    
     @classmethod
     def get_method(cls, name: str) -> Type[BaseTest]:
         """Retrieve a test class by name."""
-        if name in cls.registered_tests:
-            return cls.registered_tests[name]
+        if name in cls.registered_methods:
+            return cls.registered_methods[name]
         raise KeyError(f"Test '{name}' not found in registered tests.")
 
     @classmethod
@@ -37,9 +43,9 @@ class MethodManager:
         test_names = [test_class.__name__] if test_name is None else ([test_name] if isinstance(test_name, str) else test_name)
 
         for name in test_names:
-            if not force and name in cls.registered_tests:
-                raise KeyError(f"{name} is already registered at {cls.registered_tests[name].__module__}")
-            cls.registered_tests[name] = test_class
+            if not force and name in cls.registered_methods:
+                raise KeyError(f"{name} is already registered at {cls.registered_methods[name].__module__}")
+            cls.registered_methods[name] = test_class
 
     @classmethod
     def register_method(cls, name: Optional[Union[str, list[str]]] = None, force: bool = True, test_class: Union[Type[BaseTest], None] = None) -> Union[Type[BaseTest], callable]:

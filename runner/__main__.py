@@ -51,17 +51,29 @@ class Runner:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--method-plugin", type=str, default=None, help="Python file containing method class")
-    parser.add_argument("--test-method", type=str, required=True, help="Method to run in parallel")
-    parser.add_argument("--method-args", type=str, required=True, help="Arguments for the method should be separated by commas. Example: --method_args='api_url=api-url,api_key=your-key,model=model-name'.")
-    parser.add_argument("--output-path", type=str, default="test_results.csv", help="Path to save result. Example: result.csv")
+    parser.add_argument("--method-plugin", type=str, default=None, help="Python file containing the method class.")
+    parser.add_argument("--test-method", type=str, help="Method to run in parallel.")
+    parser.add_argument("--method-args", type=str, help="Arguments for the method should be separated by commas. Example: --method_args='api_url=api-url,api_key=your-key,model=model-name'.")
+    parser.add_argument("--output-path", type=str, default="test_results.csv", help="Path to save the result. Example: result.csv")
+    parser.add_argument("--list-methods", action="store_true", help="List all available methods and exit.")
+
+    
+    # Initialize distributed processing
+    _, global_rank, _ = init_distributed()
+
     args = parser.parse_args()
+
+    # Ensure required arguments are provided unless --list-methods is used
+    if not args.list_methods and (not args.test_method or not args.method_args):
+        parser.error("--test-method and --method-args are required unless using --list-methods.")
+    elif args.list_methods:
+        if global_rank == 0:
+            print()
+            print("Available Methods:", list(MethodManager.list_methods()))
+        return
 
     if args.method_plugin:
         MethodManager.import_method(args.method_plugin)
-
-    # Initialize distributed processing
-    _, global_rank, _ = init_distributed()
 
     # Start time tracking only for process 0
     

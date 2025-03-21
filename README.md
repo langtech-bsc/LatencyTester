@@ -1,7 +1,7 @@
-# Distributed Testing with torchrun
+# Distributed Benchmarker
 
 ## Overview
-This guide explains how to run a distributed test using `torchrun` with multiple processes, ensuring synchronization between ranks before executing a test method.
+Distributed Benchmarker is designed to measure the performance and latency of APIs, code functions, or models in a distributed computing environment. Using `torchrun`, it enables multiple processes to execute tests in parallel, collect execution times
 
 ## Command Usage
 ```sh
